@@ -1,0 +1,49 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container mt-5 d-flex justify-content-center">
+  <div class="card shadow p-4" style="width: 28rem;">
+    
+    <h3 class="text-center mb-3">
+      Hello, <%= currUser.username %> 👋
+    </h3>
+
+    <p><strong>Email:</strong> <%= currUser.email %></p>
+
+    <hr>
+    <h3>Your Bookings</h3>
+
+<% if (!user.bookings || user.bookings.length === 0) { %>
+  <p>No bookings yet.</p>
+<% } else { %>
+
+  <% user.bookings.forEach(b => { %>
+    <div class="card p-3 mb-3">
+      <h5><%= b.listing?.title || "Deleted Listing" %></h5>
+      <p>Location: <%= b.listing?.location || "Unknown" %></p>
+
+      <p>
+        Booked On:
+        <%= b.bookedAt ? b.bookedAt.toLocaleString() : "N/A" %>
+      </p>
+
+      <% if (b.listing) { %>
+      <a href="/listings/<%= b.listing._id %>" class="btn btn-outline-primary btn-sm">
+        View Listing
+      </a>
+      <% } %>
+    </div>
+  <% }) %>
+
+<% } %>
+
+<hr>
+
+<form action="/delete" method="POST" 
+  onsubmit="return confirm('Delete account permanently? This cannot be undone!');">
+    <button class="btn btn-danger w-100">
+      Delete My Account
+    </button>
+</form>
+
+  </div>
+</div>
